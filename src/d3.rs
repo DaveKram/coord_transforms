@@ -1,6 +1,6 @@
 use na::Vector3;
 
-/// Converts cartesian coordinates to spherical coordinates
+/// Converts 3-d cartesian coordinates to 3-d spherical coordinates
 /// 
 /// # Arguments
 /// 
@@ -17,7 +17,7 @@ pub fn cartesian2spherical(cart_vec: &Vector3<f64>) -> Vector3<f64> {
 	ret_vec
 }
 
-/// Converts spherical coordinates to cartesian coordinates
+/// Converts 3-d spherical coordinates to 3-d cartesian coordinates
 /// 
 /// # Arguments
 /// 
