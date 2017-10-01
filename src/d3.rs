@@ -69,6 +69,29 @@ pub fn cartesian2spherical(cart_vec: &Vector3<f64>) -> Vector3<f64> {
 	ret_vec
 }
 
+/// Converts 3-d cartesian coordinates to 3-d cylindrical coordinates
+/// 
+/// # Arguments
+/// 
+/// * `cart_vec` - Vector3 reference to the cartesian vector (x, y, z)
+/// 
+/// # Return Value
+/// 
+/// * nalgebra::Vector3<f64> - rho, theta, z (in radians)
+/// 
+/// # Formula
+/// 
+/// * rho = sqrt( x^2 + y^2 )
+/// * theta = arctan(y / x)
+/// * z = z
+pub fn cartesian2cylindrical(cart_vec: &Vector3<f64>) -> Vector3<f64> {
+    let mut ret_vec: Vector3<f64> = Vector3::new(0.0, 0.0, 0.0);
+    ret_vec.x = (cart_vec.x.powi(2) + cart_vec.y.powi(2)).sqrt();
+    ret_vec.y = cart_vec.y.atan2(cart_vec.x);
+    ret_vec.z = cart_vec.z;
+    ret_vec
+}
+
 /// Converts 3-d ENU coordinates to 3-d NED coordinates
 /// 
 /// # Arguments
@@ -142,6 +165,14 @@ mod tests {
         assert_approx_eq!(sphere_vec.x, 7.0710678118655);
         assert_approx_eq!(sphere_vec.y, 0.78539816339745);
         assert_approx_eq!(sphere_vec.z, 0.92729521800161);
+    }
+    #[test]
+    fn test_cartesian2cylindrical() {
+        let cart_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
+        let cyl_vec = cartesian2cylindrical(&cart_vec);
+        assert_approx_eq!(cyl_vec.x, 5.0);
+        assert_approx_eq!(cyl_vec.y, 0.9272952180016122);
+        assert_approx_eq!(cyl_vec.z, 5.0);
     }
     #[test]
     fn test_enu2ned() {
