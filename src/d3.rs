@@ -130,10 +130,10 @@ mod tests {
     #[test]
     fn test_cylindrical2cartesian() {
         let cyl_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
-        let cart_vec = spherical2cartesian(&cyl_vec);
-        assert_approx_eq!(cart_vec.x, 0.0);
-        assert_approx_eq!(cart_vec.y, 0.0);
-        assert_approx_eq!(cart_vec.z, 0.0);
+        let cart_vec = cylindrical2cartesian(&cyl_vec);
+        assert_approx_eq!(cart_vec.x, -1.960930862590836);
+        assert_approx_eq!(cart_vec.y, -2.2704074859237844);
+        assert_approx_eq!(cart_vec.z, 5.0);
     }
     #[test]
     fn test_cartesian2spherical() {
