@@ -1,4 +1,7 @@
+
 ## Synopsis
+
+<img src="logo.png" height="128" width="128">
 
 A rust crate use for performing coordinate transformations. Relies on the nalgebra crate for its structures. Currently uses all f64 values. Still very early work in progress.
 
