@@ -10,6 +10,11 @@ use na::Vector2;
 /// # Return Value
 /// 
 /// * nalgebra::Vector2<f64> - x, y
+/// 
+/// # Formula
+/// 
+/// * x = rho * cos(theta)
+/// * y = rho * sin(theta)
 pub fn polar2cartesian(logpol_vec: &Vector2<f64>) -> Vector2<f64> {
 	let mut ret_vec: Vector2<f64> = Vector2::new(0.0, 0.0);
 	ret_vec.x = logpol_vec.x * logpol_vec.y.cos();
@@ -26,6 +31,11 @@ pub fn polar2cartesian(logpol_vec: &Vector2<f64>) -> Vector2<f64> {
 /// # Return Value
 /// 
 /// * nalgebra::Vector2<f64> - x, y
+/// 
+/// # Formula
+/// 
+/// * x = e^rho * cos(theta)
+/// * y = e^rho * sin(theta)
 pub fn logpolar2cartesian(logpol_vec: &Vector2<f64>) -> Vector2<f64> {
 	let mut ret_vec: Vector2<f64> = Vector2::new(0.0, 0.0);
 	ret_vec.x = std::f64::consts::E.powf(logpol_vec.x) * logpol_vec.y.cos();
@@ -43,6 +53,11 @@ pub fn logpolar2cartesian(logpol_vec: &Vector2<f64>) -> Vector2<f64> {
 /// # Return Value
 /// 
 /// * nalgebra::Vector2<f64> - x, y
+/// 
+/// # Formula
+/// 
+/// * x = a * ((sinh(tau)) / (cosh(tau) - cos(sigma)))
+/// * y = a * ((sin(sigma)) / (cosh(tau) - cos(sigma)))
 pub fn bipolar2cartesian(logpol_vec: &Vector2<f64>, a: f64) -> Vector2<f64> {
 	let mut ret_vec: Vector2<f64> = Vector2::new(0.0, 0.0);
 	ret_vec.x = a * ((logpol_vec.y.sinh()) / (logpol_vec.y.cosh() - logpol_vec.x.cos()));
@@ -60,6 +75,11 @@ pub fn bipolar2cartesian(logpol_vec: &Vector2<f64>, a: f64) -> Vector2<f64> {
 /// # Return Value
 /// 
 /// * nalgebra::Vector2<f64> - rho, theta (in radians)
+/// 
+/// # Formula
+/// 
+/// * r = sqrt( x^2 + y^2 )
+/// * theta = arctan(y / x)
 pub fn cartesian2polar(cart_vec: &Vector2<f64>) -> Vector2<f64> {
 	let mut ret_vec: Vector2<f64> = Vector2::new(0.0, 0.0);
 	ret_vec.x = (cart_vec.x.powi(2) + cart_vec.y.powi(2)).sqrt();
@@ -76,6 +96,11 @@ pub fn cartesian2polar(cart_vec: &Vector2<f64>) -> Vector2<f64> {
 /// # Return Value
 /// 
 /// * nalgebra::Vector2<f64> - rho, theta (in radians)
+/// 
+/// # Formula
+/// 
+/// * r = log(sqrt( x^2 + y^2 ))
+/// * theta = arctan(y / x)
 pub fn cartesian2logpolar(cart_vec: &Vector2<f64>) -> Vector2<f64> {
 	let mut ret_vec: Vector2<f64> = Vector2::new(0.0, 0.0);
 	ret_vec.x = ((cart_vec.x.powi(2) + cart_vec.y.powi(2)).sqrt()).ln();

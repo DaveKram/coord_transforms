@@ -2,5 +2,7 @@
 #[macro_use] 
 extern crate assert_approx_eq;
 extern crate nalgebra as na;
-mod d3;
-mod d2;
+/// Module for 3-dimensional coordinate transformations
+pub mod d3;
+/// Module for 2-dimensional coordinate transformations
+pub mod d2;
