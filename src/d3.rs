@@ -18,7 +18,7 @@ use na::Vector3;
 pub fn cartesian2spherical(cart_vec: &Vector3<f64>) -> Vector3<f64> {
 	let mut ret_vec: Vector3<f64> = Vector3::new(0.0, 0.0, 0.0);
 	ret_vec.x = (cart_vec.x.powi(2) + cart_vec.y.powi(2) + cart_vec.z.powi(2)).sqrt();
-	ret_vec.y = ((cart_vec.x.powi(2) + cart_vec.y.powi(2)).sqrt() / cart_vec.z).atan(); 
+	ret_vec.y = ((cart_vec.x.powi(2) + cart_vec.y.powi(2)).sqrt()).atan2(cart_vec.z); 
 	ret_vec.z = cart_vec.y.atan2(cart_vec.x);
 	ret_vec
 }
