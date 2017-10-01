@@ -5,6 +5,8 @@
 
 A rust crate use for performing coordinate transformations. Relies on the nalgebra crate for its structures. Currently uses all f64 values. Still very early work in progress.
 
+<img src="https://travis-ci.org/DaveKram/coord_transforms.svg?branch=master">
+
 <br><br>
 
 ## Code Example
