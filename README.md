@@ -1,6 +1,6 @@
 ## Synopsis
 
-A rust crate use for performing coordinate transformations. Relies on the nalgebra crate for its structures. Still very early work in progress.
+A rust crate use for performing coordinate transformations. Relies on the nalgebra crate for its structures. Currently uses all f64 values. Still very early work in progress.
 
 ## Code Example
 
@@ -14,7 +14,7 @@ assert_approx_eq!(sphere_vec.z, 0.78539816339745);
 
 ## Motivation
 
-Providing simple helper functions for coordinate transforms seemed like a simple crate to create for the Rust community. Plus nalgebra does the heavy lifting for structures anyway.
+Providing simple helper functions for coordinate transforms seemed like a simple crate to create for the Rust community. With unit tested code, the crate will provide a stable baseline for common coordinate transformations.
 
 ## Tests
 
