@@ -50,6 +50,23 @@ pub fn bipolar2cartesian(logpol_vec: &Vector2<f64>, a: f64) -> Vector2<f64> {
 	ret_vec
 }
 
+
+/// Converts 2-d cartesian coordinates to 2-d polar coordinates
+/// 
+/// # Arguments
+/// 
+/// * `cart_vec` - Vector2 reference to the cartesian vector (x, y)
+/// 
+/// # Return Value
+/// 
+/// * nalgebra::Vector2<f64> - rho, theta (in radians)
+pub fn cartesian2polar(cart_vec: &Vector2<f64>) -> Vector2<f64> {
+	let mut ret_vec: Vector2<f64> = Vector2::new(0.0, 0.0);
+	ret_vec.x = (cart_vec.x.powi(2) + cart_vec.y.powi(2)).sqrt();
+	ret_vec.y = cart_vec.y.atan2(cart_vec.x);
+	ret_vec
+}
+
 /// Converts 2-d cartesian coordinates to 2-d log polar coordinates
 /// 
 /// # Arguments
@@ -62,7 +79,7 @@ pub fn bipolar2cartesian(logpol_vec: &Vector2<f64>, a: f64) -> Vector2<f64> {
 pub fn cartesian2logpolar(cart_vec: &Vector2<f64>) -> Vector2<f64> {
 	let mut ret_vec: Vector2<f64> = Vector2::new(0.0, 0.0);
 	ret_vec.x = ((cart_vec.x.powi(2) + cart_vec.y.powi(2)).sqrt()).ln();
-	ret_vec.y = (cart_vec.y / cart_vec.x).atan();
+	ret_vec.y = cart_vec.y.atan2(cart_vec.x);
 	ret_vec
 }
 
@@ -90,6 +107,13 @@ mod tests {
         let cart_vec = bipolar2cartesian(&bipol_vec, 1.0);
         assert_approx_eq!(cart_vec.x, 0.9643685028429331);
         assert_approx_eq!(cart_vec.y, 0.0049869);
+    }
+    #[test]
+    fn test_cartesian2polar() {
+        let cart_vec: Vector2<f64> = Vector2::new(3.0, 4.0);
+        let polar_vec = cartesian2polar(&cart_vec);
+        assert_approx_eq!(polar_vec.x, 5.0);
+        assert_approx_eq!(polar_vec.y, 0.9272952180016122);
     }
 	#[test]
     fn test_cartesian2logpolar() {
