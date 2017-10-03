@@ -5,7 +5,7 @@ use na::Vector2;
 /// 
 /// # Arguments
 /// 
-/// * `pol_vec` - Vector2 reference to the polar vector (r, theta) in radians
+/// * `pol_vec` - Vector2 reference to the polar vector (rho, theta) in radians
 /// 
 /// # Return Value
 /// 

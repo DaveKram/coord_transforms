@@ -92,52 +92,6 @@ pub fn cartesian2cylindrical(cart_vec: &Vector3<f64>) -> Vector3<f64> {
     ret_vec
 }
 
-/// Converts 3-d ENU coordinates to 3-d NED coordinates
-/// 
-/// # Arguments
-/// 
-/// * `enu_vec` - Vector3 reference to the ENU vector (x, y, z)
-/// 
-/// # Return Value
-/// 
-/// * nalgebra::Vector3<f64> - x, y, z
-/// 
-/// # Formula
-/// 
-/// * x = y
-/// * y = x
-/// * z = -z
-pub fn enu2ned(enu_vec: &Vector3<f64>) -> Vector3<f64> {
-    let mut ret_vec: Vector3<f64> = Vector3::new(0.0, 0.0, 0.0);
-    ret_vec.x = enu_vec.y;
-    ret_vec.y = enu_vec.x;
-    ret_vec.z = -enu_vec.z;
-    ret_vec
-}
-
-/// Converts 3-d NED coordinates to 3-d ENU coordinates
-/// 
-/// # Arguments
-/// 
-/// * `ned_vec` - Vector3 reference to the NED vector (x, y, z)
-/// 
-/// # Return Value
-/// 
-/// * nalgebra::Vector3<f64> - x, y, z
-/// 
-/// # Formula
-/// 
-/// * x = y
-/// * y = x
-/// * z = -z
-pub fn ned2enu(ned_vec: &Vector3<f64>) -> Vector3<f64> {
-    let mut ret_vec: Vector3<f64> = Vector3::new(0.0, 0.0, 0.0);
-    ret_vec.x = ned_vec.y;
-    ret_vec.y = ned_vec.x;
-    ret_vec.z = -ned_vec.z;
-    ret_vec
-}
-
 //Unit tests
 #[cfg(test)]
 mod tests {
@@ -173,21 +127,5 @@ mod tests {
         assert_approx_eq!(cyl_vec.x, 5.0);
         assert_approx_eq!(cyl_vec.y, 0.9272952180016122);
         assert_approx_eq!(cyl_vec.z, 5.0);
-    }
-    #[test]
-    fn test_enu2ned() {
-        let enu_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
-        let ned_vec = enu2ned(&enu_vec);
-        assert_eq!(ned_vec.x, 4.0);
-        assert_eq!(ned_vec.y, 3.0);
-        assert_eq!(ned_vec.z, -5.0);
-    }
-    #[test]
-    fn test_ned2enu() {
-        let ned_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
-        let enu_vec = ned2enu(&ned_vec);
-        assert_eq!(enu_vec.x, 4.0);
-        assert_eq!(enu_vec.y, 3.0);
-        assert_eq!(enu_vec.z, -5.0);
     }
 }
