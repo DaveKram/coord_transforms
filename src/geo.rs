@@ -1,6 +1,5 @@
 use na::Vector3;
 use structs::geo_ellipsoid;
-use std::f64::consts;
 
 /// Converts 3-d ENU coordinates to 3-d NED coordinates
 /// 
