@@ -1,5 +1,5 @@
 pub const WGS84_SEMI_MAJOR_AXIS_METERS: f64 = 6378137.0;
-pub const WGS84_FLATTENING_RECIP: f64 = 298.257223563;
+pub const WGS84_FLATTENING: f64 = 298.257223563;
 
 pub struct geo_ellipsoid {
 	semi_major_axis: f64,
@@ -10,11 +10,11 @@ pub struct geo_ellipsoid {
 }
 
 impl geo_ellipsoid {
-	pub fn new(sma: f64, f_recip: f64) -> geo_ellipsoid {
-		let smia = sma * (1.0 - (1.0 / f_recip));
+	pub fn new(sma: f64, f: f64) -> geo_ellipsoid {
+		let smia = sma * (1.0 - (1.0 / f));
 		geo_ellipsoid {
 			semi_major_axis: sma,
-			flattening: 1.0 / f_recip,
+			flattening: 1.0 / f,
 			semi_minor_axis: smia,
 			first_ecc: ((sma.powi(2) - smia.powi(2)) / (sma.powi(2))).sqrt(),
 			second_ecc: ((sma.powi(2) - smia.powi(2)) / (smia.powi(2))).sqrt(),
