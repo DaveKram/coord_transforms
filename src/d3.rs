@@ -4,7 +4,7 @@ use na::Vector3;
 /// 
 /// # Arguments
 /// 
-/// * `sphere_vec` - Vector3 reference to the spherical vector (rho, theta, phi) in radians
+/// * `sphere_vec` - Vector3 reference to the spherical vector (rho, theta, phi) (r, el, az) in radians
 /// 
 /// # Return Value
 /// 
