@@ -3,25 +3,29 @@
 
 <img src="logo.png" height="128" width="128" align="left">
 
-A rust crate use for performing coordinate transformations. Relies on the nalgebra crate for its structures. Currently uses all f64 values. Still very early work in progress.
+A Rust crate use for performing coordinate transformations. The crate relies on nalgebra vectors to perform the coordinate transformations.
 
 [![Build Status](https://travis-ci.org/DaveKram/coord_transforms.svg?branch=master)](https://travis-ci.org/DaveKram/coord_transforms)
 
-<br><br>
+<br>
 
 ## Code Example
 
 ```
-let cart_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
-let sphere_vec = cartesian2spherical(&cart_vec);
-assert_approx_eq!(sphere_vec.x, 7.0710678118655);
-assert_approx_eq!(sphere_vec.y, 0.92729521800161);
-assert_approx_eq!(sphere_vec.z, 0.78539816339745);
+let ellipsoid = geo_ellipsoid::geo_ellipsoid::new(geo_ellipsoid::WGS84_SEMI_MAJOR_AXIS_METERS, 
+                                                    geo_ellipsoid::WGS84_FLATTENING);
+let lla_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
+let ecef_vec = lla2ecef(&lla_vec, &ellipsoid);
+assert_approx_eq!(ecef_vec.x, 4127585.379918784);
+assert_approx_eq!(ecef_vec.y, 4779006.1975849345);
+assert_approx_eq!(ecef_vec.z, 894117.5572814466);
 ```
 
-## Motivation
+## Features
 
-Providing simple helper functions for coordinate transforms seemed like a simple crate to create for the Rust community. With unit tested code, the crate will provide a stable baseline for common coordinate transformations.
+* Simple, one line function calls to convert from one coordinate system to another
+* Common geodetic models provided for geodetic coordinate transformations
+* Uses nalgebra (widely used linear algebra crate)
 
 ## Tests
 
