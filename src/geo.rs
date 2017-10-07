@@ -1,5 +1,6 @@
 use na::Vector3;
 use structs::geo_ellipsoid;
+use std::f64;
 
 /// Converts 3-d ENU coordinates to 3-d NED coordinates
 /// 
@@ -125,20 +126,25 @@ mod tests {
     fn test_lla2ecef() {
     	let ellipsoid = geo_ellipsoid::geo_ellipsoid::new(geo_ellipsoid::WGS84_SEMI_MAJOR_AXIS_METERS,
     										geo_ellipsoid::WGS84_FLATTENING);
-        let lla_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
+        let latDeg: f64 = 48.856614;
+        let lonDeg: f64 = 2.352222;
+        let altitudeMeters: f64 = 1000.0;
+        let lla_vec: Vector3<f64> = Vector3::new(latDeg.to_radians(), lonDeg.to_radians(), altitudeMeters);
         let ecef_vec = lla2ecef(&lla_vec, &ellipsoid);
-        assert_approx_eq!(ecef_vec.x, 4127585.379918784);
-        assert_approx_eq!(ecef_vec.y, 4779006.1975849345);
-        assert_approx_eq!(ecef_vec.z, 894117.5572814466);
+        assert_approx_eq!(ecef_vec.x, 4201570.9492264455);
+        assert_approx_eq!(ecef_vec.y, 172588.3449531975);
+        assert_approx_eq!(ecef_vec.z, 4780835.4317144295);
     }
     #[test]
     fn test_ecef2lla() {
         let ellipsoid = geo_ellipsoid::geo_ellipsoid::new(geo_ellipsoid::WGS84_SEMI_MAJOR_AXIS_METERS,
                                             geo_ellipsoid::WGS84_FLATTENING);
-        let ecef_vec: Vector3<f64> = Vector3::new(-576793.17, -5376363.47, 3372298.51);
+        let ecef_vec: Vector3<f64> = Vector3::new(4201570.9492264455, 172588.3449531975, 4780835.4317144295);
         let lla_vec = ecef2lla(&ecef_vec, &ellipsoid);
-        assert_approx_eq!(lla_vec.x, 0.560659970438886);
-        assert_approx_eq!(lla_vec.y, -1.67767069091341);
-        assert_approx_eq!(lla_vec.z, 499.99795883893967);
+        let latDeg: f64 = 48.856614;
+        let lonDeg: f64 = 2.352222;
+        assert_approx_eq!(lla_vec.x, latDeg.to_radians());
+        assert_approx_eq!(lla_vec.y, lonDeg.to_radians());
+        assert_approx_eq!(lla_vec.z, 1000.0);
     }
 }
