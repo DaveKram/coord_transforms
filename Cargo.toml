@@ -2,6 +2,12 @@
 name = "coord_transforms"
 version = "1.0.0"
 authors = ["David Kramer <davegkramer@gmail.com>"]
+description = "A Rust crate use for performing coordinate transformations."
+repository = "https://github.com/DaveKram/coord_transforms"
+readme = "README.md"
+keywords = ["coordinates", "coordinate transforms", "geospatial", "transforms", "transformations"]
+categories = ["algorithms", "embedded", "science", "parsing"]
+license = "MIT"
 
 [dependencies]
 nalgebra = "0.13"
