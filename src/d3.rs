@@ -8,7 +8,7 @@ use na::Vector3;
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector3<f64> - x, y, z
+/// * `nalgebra::Vector3<f64>` - x, y, z
 /// 
 /// # Formula
 /// 
@@ -31,7 +31,7 @@ pub fn spherical2cartesian(sphere_vec: &Vector3<f64>) -> Vector3<f64> {
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector3<f64> - x, y, z
+/// * `nalgebra::Vector3<f64>` - x, y, z
 /// 
 /// # Formula
 /// 
@@ -54,7 +54,7 @@ pub fn cylindrical2cartesian(cyl_vec: &Vector3<f64>) -> Vector3<f64> {
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector3<f64> - rho, theta, phi (in radians)
+/// * `nalgebra::Vector3<f64>` - rho, theta, phi (in radians)
 /// 
 /// # Formula
 /// 
@@ -77,7 +77,7 @@ pub fn cartesian2spherical(cart_vec: &Vector3<f64>) -> Vector3<f64> {
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector3<f64> - rho, theta, z (in radians)
+/// * `nalgebra::Vector3<f64>` - rho, theta, z (in radians)
 /// 
 /// # Formula
 /// 
