@@ -45,6 +45,7 @@ pub const AUSTRALIAN_NATIONAL_FLATTENING: f64 = 298.25;
 pub const AIRY_SEMI_MAJOR_AXIS_METERS: f64 = 6377563.396;
 pub const AIRY_FLATTENING: f64 = 299.3249646;
 
+#[allow(non_camel_case_types)]
 pub struct geo_ellipsoid {
 	semi_major_axis: f64,
 	flattening: f64,
