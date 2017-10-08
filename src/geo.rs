@@ -136,18 +136,15 @@ mod tests {
     fn test_lla2ecef() {
     	let ellipsoid = geo_ellipsoid::geo_ellipsoid::new(geo_ellipsoid::WGS84_SEMI_MAJOR_AXIS_METERS,
     										geo_ellipsoid::WGS84_FLATTENING);
-        let latDeg: f64 = 48.856614;
-        let lonDeg: f64 = 2.352222;
-        let altitudeMeters: f64 = 1000.0;
-        let lla_vec: Vector3<f64> = Vector3::new(latDeg.to_radians(), lonDeg.to_radians(), altitudeMeters);
+        let lla_vec: Vector3<f64> = Vector3::new(0.8527087756759584, 0.04105401863784606, 1000.000000000);
         let ecef_vec = lla2ecef(&lla_vec, &ellipsoid);
 
         let test_x = 4201570.9492264455;
         let test_y = 172588.3449531975;
         let test_z = 4780835.4317144295;
-        assert!(ecef_vec.x.approx_eq_ulps(&test_x, 2));
-        assert!(ecef_vec.y.approx_eq_ulps(&test_y, 2));
-        assert!(ecef_vec.z.approx_eq_ulps(&test_z, 2));
+        assert!(ecef_vec.x.approx_eq_ratio(&test_x, 0.0000000001));
+        assert!(ecef_vec.y.approx_eq_ratio(&test_y, 0.0000000001));
+        assert!(ecef_vec.z.approx_eq_ratio(&test_z, 0.0000000001));
     }
     #[test]
     fn test_ecef2lla() {
@@ -155,14 +152,12 @@ mod tests {
                                             geo_ellipsoid::WGS84_FLATTENING);
         let ecef_vec: Vector3<f64> = Vector3::new(4201570.9492264455, 172588.3449531975, 4780835.4317144295);
         let lla_vec = ecef2lla(&ecef_vec, &ellipsoid);
-        let latDeg: f64 = 48.856614;
-        let lonDeg: f64 = 2.352222;
 
         let test_x = 0.8527087756759584;
         let test_y = 0.04105401863784606;
         let test_z = 1000.000000000;
-        assert!(lla_vec.x.approx_eq_ulps(&test_x, 2));
-        assert!(lla_vec.y.approx_eq_ulps(&test_y, 2));
+        assert!(lla_vec.x.approx_eq_ratio(&test_x, 0.0000000001));
+        assert!(lla_vec.y.approx_eq_ratio(&test_y, 0.0000000001));
         assert!(lla_vec.z.approx_eq_ratio(&test_z, 0.0000000001));
     }
 }
