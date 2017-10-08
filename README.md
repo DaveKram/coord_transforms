@@ -35,6 +35,14 @@ The crate has unit tests built in. If you want to verify this yourself, run:
 cargo test
 ```
 
+## Examples
+
+There are very early work in progress examples being built. These contain basic examples, benchmarking, and other types of examples to help aid in use of the crate. To run an example from the /examples directory:
+
+```
+cargo run --example <FILE_NAME_HERE>
+```
+
 ## License
 
 Copyright (c) 2017 David Kramer
