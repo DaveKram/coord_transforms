@@ -9,7 +9,7 @@ use na::Vector2;
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector2<f64> - x, y
+/// * `nalgebra::Vector2<f64>` - x, y
 /// 
 /// # Formula
 /// 
@@ -30,7 +30,7 @@ pub fn polar2cartesian(logpol_vec: &Vector2<f64>) -> Vector2<f64> {
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector2<f64> - x, y
+/// * `nalgebra::Vector2<f64>` - x, y
 /// 
 /// # Formula
 /// 
@@ -52,7 +52,7 @@ pub fn logpolar2cartesian(logpol_vec: &Vector2<f64>) -> Vector2<f64> {
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector2<f64> - x, y
+/// * `nalgebra::Vector2<f64>` - x, y
 /// 
 /// # Formula
 /// 
@@ -74,7 +74,7 @@ pub fn bipolar2cartesian(logpol_vec: &Vector2<f64>, a: f64) -> Vector2<f64> {
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector2<f64> - rho, theta (in radians)
+/// * `nalgebra::Vector2<f64>` - rho, theta (in radians)
 /// 
 /// # Formula
 /// 
@@ -95,7 +95,7 @@ pub fn cartesian2polar(cart_vec: &Vector2<f64>) -> Vector2<f64> {
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector2<f64> - rho, theta (in radians)
+/// * `nalgebra::Vector2<f64>` - rho, theta (in radians)
 /// 
 /// # Formula
 /// 

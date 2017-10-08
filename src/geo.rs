@@ -10,7 +10,7 @@ use std::f64;
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector3<f64> - x, y, z
+/// * `nalgebra::Vector3<f64>` - x, y, z
 /// 
 /// # Formula
 /// 
@@ -33,7 +33,7 @@ pub fn enu2ned(enu_vec: &Vector3<f64>) -> Vector3<f64> {
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector3<f64> - x, y, z
+/// * `nalgebra::Vector3<f64>` - x, y, z
 /// 
 /// # Formula
 /// 
@@ -57,7 +57,7 @@ pub fn ned2enu(ned_vec: &Vector3<f64>) -> Vector3<f64> {
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector3<f64> - x, y, z
+/// * `nalgebra::Vector3<f64>` - x, y, z
 /// 
 /// # Formula
 /// 
@@ -66,10 +66,10 @@ pub fn ned2enu(ned_vec: &Vector3<f64>) -> Vector3<f64> {
 /// * z = (( b^2 / a^2 ) * N + h) * sin(lat)
 pub fn lla2ecef(lla_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoid) -> Vector3<f64> {
 	let mut ret_vec: Vector3<f64> = Vector3::new(0.0, 0.0, 0.0);
-	let N = ellipsoid.get_semi_major_axis() / (1.0 - ellipsoid.get_first_ecc().powi(2) * lla_vec.x.sin().powi(2)).sqrt();
-	ret_vec.x = (N + lla_vec.z) * lla_vec.x.cos() * lla_vec.y.cos();
-	ret_vec.y = (N + lla_vec.z) * lla_vec.x.cos() * lla_vec.y.sin();
-	ret_vec.z = ((ellipsoid.get_semi_minor_axis().powi(2) / ellipsoid.get_semi_major_axis().powi(2)) * N + lla_vec.z) * lla_vec.x.sin();
+	let n = ellipsoid.get_semi_major_axis() / (1.0 - ellipsoid.get_first_ecc().powi(2) * lla_vec.x.sin().powi(2)).sqrt();
+	ret_vec.x = (n + lla_vec.z) * lla_vec.x.cos() * lla_vec.y.cos();
+	ret_vec.y = (n + lla_vec.z) * lla_vec.x.cos() * lla_vec.y.sin();
+	ret_vec.z = ((ellipsoid.get_semi_minor_axis().powi(2) / ellipsoid.get_semi_major_axis().powi(2)) * n + lla_vec.z) * lla_vec.x.sin();
 	ret_vec
 }
 
@@ -82,7 +82,7 @@ pub fn lla2ecef(lla_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoid
 /// 
 /// # Return Value
 /// 
-/// * nalgebra::Vector3<f64> - lat, long, alt (radians, radians, meters)
+/// * `nalgebra::Vector3<f64>` - lat, long, alt (radians, radians, meters)
 /// 
 /// # Formula
 /// 
@@ -93,12 +93,12 @@ pub fn ecef2lla(ecef_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoi
     let mut ret_vec: Vector3<f64> = Vector3::new(0.0, 0.0, 0.0);
     let p = (ecef_vec.x.powi(2) + ecef_vec.y.powi(2)).sqrt();
     let theta = (ecef_vec.z * ellipsoid.get_semi_major_axis()).atan2(p * ellipsoid.get_semi_minor_axis());
-    let xTop = ecef_vec.z + ellipsoid.get_second_ecc().powi(2) * ellipsoid.get_semi_minor_axis() * theta.sin().powi(3);
-    let xBot = p - ellipsoid.get_first_ecc().powi(2) * ellipsoid.get_semi_major_axis() * theta.cos().powi(3);
-    ret_vec.x = xTop.atan2(xBot);
+    let x_top = ecef_vec.z + ellipsoid.get_second_ecc().powi(2) * ellipsoid.get_semi_minor_axis() * theta.sin().powi(3);
+    let x_bot = p - ellipsoid.get_first_ecc().powi(2) * ellipsoid.get_semi_major_axis() * theta.cos().powi(3);
+    ret_vec.x = x_top.atan2(x_bot);
     ret_vec.y = ecef_vec.y.atan2(ecef_vec.x);
-    let N = ellipsoid.get_semi_major_axis() / (1.0 - ellipsoid.get_first_ecc().powi(2) * (ret_vec.x.sin() * ret_vec.x.sin())).sqrt();
-    ret_vec.z = (p / ret_vec.x.cos()) - N;
+    let n = ellipsoid.get_semi_major_axis() / (1.0 - ellipsoid.get_first_ecc().powi(2) * (ret_vec.x.sin() * ret_vec.x.sin())).sqrt();
+    ret_vec.z = (p / ret_vec.x.cos()) - n;
     ret_vec
 }
 
