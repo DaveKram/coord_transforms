@@ -112,39 +112,55 @@ pub fn cartesian2logpolar(cart_vec: &Vector2<f64>) -> Vector2<f64> {
 #[cfg(test)]
 mod tests {
 	use super::*;
+    use float_cmp::ApproxEqUlps;
 	#[test]
 	fn test_polar2cartesian() {
         let pol_vec: Vector2<f64> = Vector2::new(3.0, 4.0);
         let cart_vec = polar2cartesian(&pol_vec);
-        assert_approx_eq!(cart_vec.x, -1.960930862590836);
-        assert_approx_eq!(cart_vec.y, -2.2704074859237844);
+
+        let test_x = -1.960930862590836;
+        let test_y = -2.2704074859237844;
+        assert!(cart_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(cart_vec.y.approx_eq_ulps(&test_y, 2));
     }
     #[test]
     fn test_logpolar2cartesian() {
         let logpol_vec: Vector2<f64> = Vector2::new(3.0, 4.0);
         let cart_vec = logpolar2cartesian(&logpol_vec);
-        assert_approx_eq!(cart_vec.x, -13.128783081462156);
-        assert_approx_eq!(cart_vec.y, -15.20078446306795);
+
+        let test_x = -13.128783081462156;
+        let test_y = -15.20078446306795;
+        assert!(cart_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(cart_vec.y.approx_eq_ulps(&test_y, 2));
     }
     #[test]
     fn test_bipolar2cartesian() {
         let bipol_vec: Vector2<f64> = Vector2::new(3.0, 4.0);
         let cart_vec = bipolar2cartesian(&bipol_vec, 1.0);
-        assert_approx_eq!(cart_vec.x, 0.9643685028429331);
-        assert_approx_eq!(cart_vec.y, 0.0049869);
+
+        let test_x = 0.9643685028429331;
+        let test_y = 0.004986885446035738;
+        assert!(cart_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(cart_vec.y.approx_eq_ulps(&test_y, 2));
     }
     #[test]
     fn test_cartesian2polar() {
         let cart_vec: Vector2<f64> = Vector2::new(3.0, 4.0);
         let polar_vec = cartesian2polar(&cart_vec);
-        assert_approx_eq!(polar_vec.x, 5.0);
-        assert_approx_eq!(polar_vec.y, 0.9272952180016122);
+
+        let test_x = 5.0;
+        let test_y = 0.9272952180016122;
+        assert!(polar_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(polar_vec.y.approx_eq_ulps(&test_y, 2));
     }
 	#[test]
     fn test_cartesian2logpolar() {
         let cart_vec: Vector2<f64> = Vector2::new(3.0, 4.0);
         let logpolar_vec = cartesian2logpolar(&cart_vec);
-        assert_approx_eq!(logpolar_vec.x, 1.6094379124341003);
-        assert_approx_eq!(logpolar_vec.y, 0.9272952180016122);
+
+        let test_x = 1.6094379124341003;
+        let test_y = 0.9272952180016122;
+        assert!(logpolar_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(logpolar_vec.y.approx_eq_ulps(&test_y, 2));
     }
 }

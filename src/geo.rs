@@ -106,21 +106,31 @@ pub fn ecef2lla(ecef_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoi
 #[cfg(test)]
 mod tests {
 	use super::*;
+    use float_cmp::ApproxEqUlps;
+    use float_cmp::ApproxEqRatio;
     #[test]
     fn test_enu2ned() {
         let enu_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
         let ned_vec = enu2ned(&enu_vec);
-        assert_eq!(ned_vec.x, 4.0);
-        assert_eq!(ned_vec.y, 3.0);
-        assert_eq!(ned_vec.z, -5.0);
+
+        let test_x = 4.0;
+        let test_y = 3.0;
+        let test_z = -5.0;
+        assert!(ned_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(ned_vec.y.approx_eq_ulps(&test_y, 2));
+        assert!(ned_vec.z.approx_eq_ulps(&test_z, 2));
     }
     #[test]
     fn test_ned2enu() {
         let ned_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
         let enu_vec = ned2enu(&ned_vec);
-        assert_eq!(enu_vec.x, 4.0);
-        assert_eq!(enu_vec.y, 3.0);
-        assert_eq!(enu_vec.z, -5.0);
+
+        let test_x = 4.0;
+        let test_y = 3.0;
+        let test_z = -5.0;
+        assert!(enu_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(enu_vec.y.approx_eq_ulps(&test_y, 2));
+        assert!(enu_vec.z.approx_eq_ulps(&test_z, 2));
     }
     #[test]
     fn test_lla2ecef() {
@@ -131,9 +141,13 @@ mod tests {
         let altitudeMeters: f64 = 1000.0;
         let lla_vec: Vector3<f64> = Vector3::new(latDeg.to_radians(), lonDeg.to_radians(), altitudeMeters);
         let ecef_vec = lla2ecef(&lla_vec, &ellipsoid);
-        assert_approx_eq!(ecef_vec.x, 4201570.9492264455);
-        assert_approx_eq!(ecef_vec.y, 172588.3449531975);
-        assert_approx_eq!(ecef_vec.z, 4780835.4317144295);
+
+        let test_x = 4201570.9492264455;
+        let test_y = 172588.3449531975;
+        let test_z = 4780835.4317144295;
+        assert!(ecef_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(ecef_vec.y.approx_eq_ulps(&test_y, 2));
+        assert!(ecef_vec.z.approx_eq_ulps(&test_z, 2));
     }
     #[test]
     fn test_ecef2lla() {
@@ -143,8 +157,12 @@ mod tests {
         let lla_vec = ecef2lla(&ecef_vec, &ellipsoid);
         let latDeg: f64 = 48.856614;
         let lonDeg: f64 = 2.352222;
-        assert_approx_eq!(lla_vec.x, latDeg.to_radians());
-        assert_approx_eq!(lla_vec.y, lonDeg.to_radians());
-        assert_approx_eq!(lla_vec.z, 1000.0);
+
+        let test_x = 0.8527087756759584;
+        let test_y = 0.04105401863784606;
+        let test_z = 1000.000000000;
+        assert!(lla_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(lla_vec.y.approx_eq_ulps(&test_y, 2));
+        assert!(lla_vec.z.approx_eq_ratio(&test_z, 0.0000000001));
     }
 }

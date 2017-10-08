@@ -11,4 +11,4 @@ license = "MIT"
 
 [dependencies]
 nalgebra = "0.13"
-assert_approx_eq = "1.0.0"
+float-cmp = "0.2.5"

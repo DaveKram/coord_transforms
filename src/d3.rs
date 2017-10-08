@@ -96,36 +96,53 @@ pub fn cartesian2cylindrical(cart_vec: &Vector3<f64>) -> Vector3<f64> {
 #[cfg(test)]
 mod tests {
 	use super::*;
+    use float_cmp::ApproxEqUlps;
     #[test]
     fn test_spherical2cartesian() {
         let sphere_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
         let cart_vec = spherical2cartesian(&sphere_vec);
-        assert_approx_eq!(cart_vec.x, -0.6440287493492097);
-        assert_approx_eq!(cart_vec.y, 2.177148851629225);
-        assert_approx_eq!(cart_vec.z, -1.960930862590836);
+
+        let test_x = -0.6440287493492097;
+        let test_y = 2.177148851629225;
+        let test_z = -1.960930862590836;
+        assert!(cart_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(cart_vec.y.approx_eq_ulps(&test_y, 2));
+        assert!(cart_vec.z.approx_eq_ulps(&test_z, 2));
     }
     #[test]
     fn test_cylindrical2cartesian() {
         let cyl_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
         let cart_vec = cylindrical2cartesian(&cyl_vec);
-        assert_approx_eq!(cart_vec.x, -1.960930862590836);
-        assert_approx_eq!(cart_vec.y, -2.2704074859237844);
-        assert_approx_eq!(cart_vec.z, 5.0);
+
+        let test_x = -1.960930862590836;
+        let test_y = -2.2704074859237844;
+        let test_z = 5.0;
+        assert!(cart_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(cart_vec.y.approx_eq_ulps(&test_y, 2));
+        assert!(cart_vec.z.approx_eq_ulps(&test_z, 2));
     }
     #[test]
     fn test_cartesian2spherical() {
         let cart_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
         let sphere_vec = cartesian2spherical(&cart_vec);
-        assert_approx_eq!(sphere_vec.x, 7.0710678118655);
-        assert_approx_eq!(sphere_vec.y, 0.78539816339745);
-        assert_approx_eq!(sphere_vec.z, 0.92729521800161);
+
+        let test_x = 7.0710678118654755;
+        let test_y = 0.7853981633974483;
+        let test_z = 0.9272952180016122;
+        assert!(sphere_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(sphere_vec.y.approx_eq_ulps(&test_y, 2));
+        assert!(sphere_vec.z.approx_eq_ulps(&test_z, 2));
     }
     #[test]
     fn test_cartesian2cylindrical() {
         let cart_vec: Vector3<f64> = Vector3::new(3.0, 4.0, 5.0);
         let cyl_vec = cartesian2cylindrical(&cart_vec);
-        assert_approx_eq!(cyl_vec.x, 5.0);
-        assert_approx_eq!(cyl_vec.y, 0.9272952180016122);
-        assert_approx_eq!(cyl_vec.z, 5.0);
+
+        let test_x = 5.0;
+        let test_y = 0.9272952180016122;
+        let test_z = 5.0;
+        assert!(cyl_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(cyl_vec.y.approx_eq_ulps(&test_y, 2));
+        assert!(cyl_vec.z.approx_eq_ulps(&test_z, 2));
     }
 }
