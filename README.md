@@ -3,7 +3,7 @@
 
 <img src="logo.png" height="128" width="128" align="left">
 
-A Rust crate use for performing coordinate transformations. The crate relies on nalgebra vectors to perform the coordinate transformations.
+A Rust crate use for performing coordinate transformations. The crate relies on nalgebra vectors to perform the coordinate transformations. The crate/code is constantly changing, so expect half-written code to be pushed to the remote repository and things to break often. If you want something more stable, use the crates.io version which will only change when I think we've reached stable releases.
 
 [![Build Status](https://travis-ci.org/DaveKram/coord_transforms.svg?branch=master)](https://travis-ci.org/DaveKram/coord_transforms)
 
@@ -27,13 +27,14 @@ assert_approx_eq!(ecef_vec.z, 894117.5572814466);
 * Common geodetic models provided for geodetic coordinate transformations
 * Uses nalgebra (widely used linear algebra crate)
 
-## Tests
+## Suggestions for use
 
-The crate has unit tests built in. If you want to verify this yourself, run:
+* Use [Rayon!](https://github.com/rayon-rs/rayon "Rayon Github") Rayon allows for easy parallelization - which coordinate transformations are an ideal candidate for. Take a look at examples/benchmarking for an example.
 
-```
-cargo test
-```
+## Roadmap / Ideas
+
+* UTM - **currently in progress**
+* Asserts/Option return for invalid input data
 
 ## Examples
 

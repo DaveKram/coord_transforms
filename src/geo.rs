@@ -104,8 +104,9 @@ pub fn ecef2lla(ecef_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoi
 }
 
 
-//TODO: Clean this up A LOT!!!!
-//TODO: Reference: http://www.movable-type.co.uk/scripts/latlong-utm-mgrs.html
+//TODO: Comment (include Karney method)
+//TODO: Clean this up a lot. Check the math - currently outputs the correct data -> minus the Norway/Svalbard case
+//TODO: Reference: http://www.movable-type.co.uk/scripts/latlong-utm-mgrs.html (c) Chris Veness 2014-2017 MIT Licence
 pub fn lla2utm(lla_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoid) -> utm_grid::utm_grid {
     let mut ret_utm = utm_grid::utm_grid::new();
     let zone = ((lla_vec.y.to_degrees() + 180.0) / 6.0).floor() + 1.0; //Longitudinal zone
