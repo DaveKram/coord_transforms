@@ -2,7 +2,7 @@ pub const SCALE_FACTOR_CENTERAL_MERIDIAN: f64 = 0.9996;
 pub const FALSE_EASTING: f64 = 500000.0;
 pub const FALSE_NORTHING: f64 = 10000000.0;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum hemisphere {
 	NORTH,
