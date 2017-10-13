@@ -16,3 +16,4 @@ float-cmp = "0.2.5"
 [dev-dependencies]
 chrono = "0.4.0"
 rayon = "0.8.2"
+minifb = "0.10.3"
