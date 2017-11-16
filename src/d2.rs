@@ -15,10 +15,10 @@ use na::Vector2;
 /// 
 /// * x = rho * cos(theta)
 /// * y = rho * sin(theta)
-pub fn polar2cartesian(logpol_vec: &Vector2<f64>) -> Vector2<f64> {
+pub fn polar2cartesian(pol_vec: &Vector2<f64>) -> Vector2<f64> {
 	let mut ret_vec: Vector2<f64> = Vector2::new(0.0, 0.0);
-	ret_vec.x = logpol_vec.x * logpol_vec.y.cos();
-	ret_vec.y = logpol_vec.x * logpol_vec.y.sin();
+	ret_vec.x = pol_vec.x * pol_vec.y.cos();
+	ret_vec.y = pol_vec.x * pol_vec.y.sin();
 	ret_vec
 }
 
@@ -58,10 +58,10 @@ pub fn logpolar2cartesian(logpol_vec: &Vector2<f64>) -> Vector2<f64> {
 /// 
 /// * x = a * ((sinh(tau)) / (cosh(tau) - cos(sigma)))
 /// * y = a * ((sin(sigma)) / (cosh(tau) - cos(sigma)))
-pub fn bipolar2cartesian(logpol_vec: &Vector2<f64>, a: f64) -> Vector2<f64> {
+pub fn bipolar2cartesian(bipol_vec: &Vector2<f64>, a: f64) -> Vector2<f64> {
 	let mut ret_vec: Vector2<f64> = Vector2::new(0.0, 0.0);
-	ret_vec.x = a * ((logpol_vec.y.sinh()) / (logpol_vec.y.cosh() - logpol_vec.x.cos()));
-	ret_vec.y = a * ((logpol_vec.x.sin()) / (logpol_vec.y.cosh() - logpol_vec.x.cos()));
+	ret_vec.x = a * ((bipol_vec.y.sinh()) / (bipol_vec.y.cosh() - bipol_vec.x.cos()));
+	ret_vec.y = a * ((bipol_vec.x.sin()) / (bipol_vec.y.cosh() - bipol_vec.x.cos()));
 	ret_vec
 }
 
