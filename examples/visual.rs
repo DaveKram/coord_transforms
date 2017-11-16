@@ -1,8 +1,7 @@
 extern crate coord_transforms;
 extern crate nalgebra as na;
 extern crate minifb;
-use coord_transforms::*;
-use na::Vector2;
+use coord_transforms::prelude::*;
 use minifb::{Key, WindowOptions, Window};
 
 const WIDTH: usize = 800;

@@ -1,10 +1,7 @@
 extern crate coord_transforms;
-extern crate nalgebra as na;
 extern crate chrono;
 extern crate rayon;
-use coord_transforms::*;
-use na::Vector3;
-use na::Vector2;
+use coord_transforms::prelude::*;
 use chrono::prelude::*;
 use rayon::prelude::*;
 
