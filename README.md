@@ -33,7 +33,6 @@ assert_approx_eq!(ecef_vec.z, 894117.5572814466);
 
 ## Roadmap / Ideas
 
-* UTM - **currently in progress**
 * Asserts/Option return for invalid input data
 
 ## Examples

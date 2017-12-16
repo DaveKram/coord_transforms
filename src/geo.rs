@@ -1,5 +1,6 @@
 use na::Vector3;
 use na::Vector2;
+use na::Matrix3;
 use structs::geo_ellipsoid;
 use structs::utm_grid;
 
@@ -102,7 +103,6 @@ pub fn ecef2lla(ecef_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoi
     ret_vec.z = (p / ret_vec.x.cos()) - n;
     ret_vec
 }
-
 
 /// Converts 2-d LL coordinates to UTM Grid (using Karney method) - accruacy to within a few nanometers within 3900km of the central meridian
 /// 
@@ -235,6 +235,48 @@ pub fn ll2utm(ll_vec: &Vector2<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoid) -
     ret_utm
 }
 
+/// Converts 3-d LLA origin coordinates plus 3-d LLA coordinates and an ellipsoid to local NED cartesian coordinates
+/// 
+/// # Arguments
+/// 
+/// * `lla_origin` - Vector3 reference to the LLA origin vector (lat, long, alt) (radians, radians, meters)
+/// * `lla_vec` - Vector3 reference to the LLA vector (lat, long, alt) (radians, radians, meters)
+/// * `ellipsoid` - geo_ellipsoid reference to the ellipsoid
+/// 
+/// # Return Value
+/// 
+/// * `nalgebra::Vector3<f64>` - x, y, z
+/// 
+pub fn lla2ned(lla_origin: &Vector3<f64>, lla_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoid) -> Vector3<f64> {
+    let orig = lla2ecef(lla_origin, ellipsoid);
+    let actual = lla2ecef(lla_vec, ellipsoid);
+    let ned_rot = Matrix3::new(-lla_origin.x.sin() * lla_origin.y.cos(), -lla_origin.x.sin()  * lla_origin.y.sin(), lla_origin.x.cos(),
+                                -lla_origin.y.sin(), lla_origin.y.cos(), 0.0,
+                                -lla_origin.x.cos() * lla_origin.y.cos(), -lla_origin.x.cos() * lla_origin.y.sin(), -lla_origin.x.sin());
+    ned_rot * (actual - orig)
+}
+
+/// Converts 3-d LLA origin coordinates plus 3-d LLA coordinates and an ellipsoid to local ENU cartesian coordinates
+/// 
+/// # Arguments
+/// 
+/// * `lla_origin` - Vector3 reference to the LLA origin vector (lat, long, alt) (radians, radians, meters)
+/// * `lla_vec` - Vector3 reference to the LLA vector (lat, long, alt) (radians, radians, meters)
+/// * `ellipsoid` - geo_ellipsoid reference to the ellipsoid
+/// 
+/// # Return Value
+/// 
+/// * `nalgebra::Vector3<f64>` - x, y, z
+/// 
+pub fn lla2enu(lla_origin: &Vector3<f64>, lla_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoid) -> Vector3<f64> {
+    let orig = lla2ecef(lla_origin, ellipsoid);
+    let actual = lla2ecef(lla_vec, ellipsoid);
+    let enu_rot = Matrix3::new(-lla_origin.y.sin(), lla_origin.y.cos(), 0.0,
+                                    -lla_origin.y.cos() * lla_origin.x.sin(), -lla_origin.y.sin() * lla_origin.x.sin(), lla_origin.x.cos(),
+                                    lla_origin.y.cos() * lla_origin.x.cos(), lla_origin.y.sin() * lla_origin.x.cos(), lla_origin.x.sin());
+    enu_rot * (actual - orig)
+}
+
 //Unit tests
 #[cfg(test)]
 mod tests {
@@ -313,5 +355,35 @@ mod tests {
         assert!(utm.get_northing().approx_eq_ratio(&test_northing, 0.0000000001));
         assert!(utm.get_convergence().approx_eq_ratio(&test_convergence, 0.0000000001));
         assert!(utm.get_scale().approx_eq_ratio(&test_scale, 0.0000000001));
+    }
+    #[test]
+    fn test_lla2ned() {
+        let ellipsoid = geo_ellipsoid::geo_ellipsoid::new(geo_ellipsoid::WGS84_SEMI_MAJOR_AXIS_METERS,
+    										geo_ellipsoid::WGS84_FLATTENING);
+        let lla_orig_vec: Vector3<f64> = Vector3::new(0.8527087756759584, 0.04105401863784606, 1000.000000000);
+        let lla_vec: Vector3<f64> = Vector3::new(0.8527087756759584, 0.042799347889836060477, 1000.000000000);
+        let ned_vec = lla2ned(&lla_orig_vec, &lla_vec, &ellipsoid);
+
+        let test_x = 4.823198223193799;
+        let test_y = 7339.305041782073;
+        let test_z = 4.2139798876589225;
+        assert!(ned_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(ned_vec.y.approx_eq_ulps(&test_y, 2));
+        assert!(ned_vec.z.approx_eq_ulps(&test_z, 2));
+    }
+    #[test]
+    fn test_lla2enu() {
+        let ellipsoid = geo_ellipsoid::geo_ellipsoid::new(geo_ellipsoid::WGS84_SEMI_MAJOR_AXIS_METERS,
+    										geo_ellipsoid::WGS84_FLATTENING);
+        let lla_orig_vec: Vector3<f64> = Vector3::new(0.8527087756759584, 0.04105401863784606, 1000.000000000);
+        let lla_vec: Vector3<f64> = Vector3::new(0.8527087756759584, 0.042799347889836060477, 1000.000000000);
+        let enu_vec = lla2enu(&lla_orig_vec, &lla_vec, &ellipsoid);
+        
+        let test_x = 7339.305041782073;
+        let test_y = 4.823198223193799;
+        let test_z = -4.2139798876589225;
+        assert!(enu_vec.x.approx_eq_ulps(&test_x, 2));
+        assert!(enu_vec.y.approx_eq_ulps(&test_y, 2));
+        assert!(enu_vec.z.approx_eq_ulps(&test_z, 2));
     }
 }
