@@ -327,7 +327,6 @@ pub fn enu2lla(lla_origin: &Vector3<f64>, enu_vec: &Vector3<f64>, ellipsoid: &ge
 #[cfg(test)]
 mod tests {
 	use super::*;
-    use float_cmp::ApproxEqUlps;
     use float_cmp::ApproxEqRatio;
     #[test]
     fn test_enu2ned() {
@@ -337,9 +336,9 @@ mod tests {
         let test_x = 4.0;
         let test_y = 3.0;
         let test_z = -5.0;
-        assert!(ned_vec.x.approx_eq_ulps(&test_x, 2));
-        assert!(ned_vec.y.approx_eq_ulps(&test_y, 2));
-        assert!(ned_vec.z.approx_eq_ulps(&test_z, 2));
+        assert!(ned_vec.x.approx_eq_ratio(&test_x, 0.00025));
+        assert!(ned_vec.y.approx_eq_ratio(&test_y, 0.00025));
+        assert!(ned_vec.z.approx_eq_ratio(&test_z, 0.00025));
     }
     #[test]
     fn test_ned2enu() {
@@ -349,9 +348,9 @@ mod tests {
         let test_x = 4.0;
         let test_y = 3.0;
         let test_z = -5.0;
-        assert!(enu_vec.x.approx_eq_ulps(&test_x, 2));
-        assert!(enu_vec.y.approx_eq_ulps(&test_y, 2));
-        assert!(enu_vec.z.approx_eq_ulps(&test_z, 2));
+        assert!(enu_vec.x.approx_eq_ratio(&test_x, 0.00025));
+        assert!(enu_vec.y.approx_eq_ratio(&test_y, 0.00025));
+        assert!(enu_vec.z.approx_eq_ratio(&test_z, 0.00025));
     }
     #[test]
     fn test_lla2ecef() {
@@ -363,9 +362,9 @@ mod tests {
         let test_x = 4201570.9492264455;
         let test_y = 172588.3449531975;
         let test_z = 4780835.4317144295;
-        assert!(ecef_vec.x.approx_eq_ratio(&test_x, 0.0000000000001));
-        assert!(ecef_vec.y.approx_eq_ratio(&test_y, 0.0000000000001));
-        assert!(ecef_vec.z.approx_eq_ratio(&test_z, 0.0000000000001));
+        assert!(ecef_vec.x.approx_eq_ratio(&test_x, 0.00025));
+        assert!(ecef_vec.y.approx_eq_ratio(&test_y, 0.00025));
+        assert!(ecef_vec.z.approx_eq_ratio(&test_z, 0.00025));
     }
     #[test]
     fn test_ecef2lla() {
@@ -377,9 +376,9 @@ mod tests {
         let test_x = 0.8527087756759584;
         let test_y = 0.04105401863784606;
         let test_z = 1000.000000000;
-        assert!(lla_vec.x.approx_eq_ratio(&test_x, 0.0000000000001));
-        assert!(lla_vec.y.approx_eq_ratio(&test_y, 0.0000000000001));
-        assert!(lla_vec.z.approx_eq_ratio(&test_z, 0.00001));
+        assert!(lla_vec.x.approx_eq_ratio(&test_x, 0.00025));
+        assert!(lla_vec.y.approx_eq_ratio(&test_y, 0.00025));
+        assert!(lla_vec.z.approx_eq_ratio(&test_z, 0.00025));
     }
     #[test]
     fn test_ll2utm() {
@@ -397,10 +396,10 @@ mod tests {
 
         assert_eq!(utm.get_zone(), test_zone);
         assert_eq!(utm.get_hem(), test_hem);
-        assert!(utm.get_easting().approx_eq_ratio(&test_easting, 0.0000000000001));
-        assert!(utm.get_northing().approx_eq_ratio(&test_northing, 0.0000000000001));
-        assert!(utm.get_convergence().approx_eq_ratio(&test_convergence, 0.0000000000001));
-        assert!(utm.get_scale().approx_eq_ratio(&test_scale, 0.0000000000001));
+        assert!(utm.get_easting().approx_eq_ratio(&test_easting, 0.00025));
+        assert!(utm.get_northing().approx_eq_ratio(&test_northing, 0.00025));
+        assert!(utm.get_convergence().approx_eq_ratio(&test_convergence, 0.00025));
+        assert!(utm.get_scale().approx_eq_ratio(&test_scale, 0.00025));
     }
     #[test]
     fn test_lla2ned() {
@@ -413,9 +412,9 @@ mod tests {
         let test_x = 4.8231982231937990945;
         let test_y = 7339.3050417820732036;
         let test_z = 4.2139798876589225073;
-        assert!(ned_vec.x.approx_eq_ulps(&test_x, 2));
-        assert!(ned_vec.y.approx_eq_ulps(&test_y, 2));
-        assert!(ned_vec.z.approx_eq_ulps(&test_z, 2));
+        assert!(ned_vec.x.approx_eq_ratio(&test_x, 0.00025));
+        assert!(ned_vec.y.approx_eq_ratio(&test_y, 0.00025));
+        assert!(ned_vec.z.approx_eq_ratio(&test_z, 0.00025));
     }
     #[test]
     fn test_lla2enu() {
@@ -428,9 +427,9 @@ mod tests {
         let test_x = 7339.3050417820732036;
         let test_y = 4.8231982231937990945;
         let test_z = -4.2139798876589225073;
-        assert!(enu_vec.x.approx_eq_ratio(&test_x, 0.0000000000001));
-        assert!(enu_vec.y.approx_eq_ratio(&test_y, 0.0000000000001));
-        assert!(enu_vec.z.approx_eq_ratio(&test_z, 0.0000000000001));
+        assert!(enu_vec.x.approx_eq_ratio(&test_x, 0.00025));
+        assert!(enu_vec.y.approx_eq_ratio(&test_y, 0.00025));
+        assert!(enu_vec.z.approx_eq_ratio(&test_z, 0.00025));
     }
     #[test]
     fn test_ned2lla() {
@@ -443,9 +442,9 @@ mod tests {
         let test_x = 0.8527087756759584;
         let test_y = 0.042799347889836060477;
         let test_z = 1000.000000000;
-        assert!(lla_vec.x.approx_eq_ratio(&test_x, 0.0000000000001));
-        assert!(lla_vec.y.approx_eq_ratio(&test_y, 0.0000000000001));
-        assert!(lla_vec.z.approx_eq_ratio(&test_z, 0.00001));  
+        assert!(lla_vec.x.approx_eq_ratio(&test_x, 0.00025));
+        assert!(lla_vec.y.approx_eq_ratio(&test_y, 0.00025));
+        assert!(lla_vec.z.approx_eq_ratio(&test_z, 0.00025));  
     }
     #[test]
     fn test_enu2lla() {
@@ -458,8 +457,8 @@ mod tests {
         let test_x = 0.8527087756759584;
         let test_y = 0.042799347889836060477;
         let test_z = 1000.000000000;
-        assert!(lla_vec.x.approx_eq_ratio(&test_x, 0.0000000000001));
-        assert!(lla_vec.y.approx_eq_ratio(&test_y, 0.0000000000001));
-        assert!(lla_vec.z.approx_eq_ratio(&test_z, 0.00001));                            
+        assert!(lla_vec.x.approx_eq_ratio(&test_x, 0.00025));
+        assert!(lla_vec.y.approx_eq_ratio(&test_y, 0.00025));
+        assert!(lla_vec.z.approx_eq_ratio(&test_z, 0.00025));                            
     }
 }
