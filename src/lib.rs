@@ -21,4 +21,5 @@ pub mod prelude {
 	pub use d2;
 	pub use geo;
 	pub use structs;
+	pub use structs::*;
 }
