@@ -10,7 +10,7 @@ categories = ["algorithms", "embedded", "science", "parsing"]
 license = "MIT"
 
 [dependencies]
-nalgebra = "0.13"
+nalgebra = "0.16.8"
 float-cmp = "0.2.5"
 
 [dev-dependencies]
