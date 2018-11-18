@@ -56,6 +56,7 @@ pub fn ned2enu(ned_vec: &Vector3<f64>) -> Vector3<f64> {
 /// # Arguments
 /// 
 /// * `lla_vec` - Vector3 reference to the LLA vector (latitude, longitude, altitude) (radians, radians, meters)
+/// * `ellipsoid` - geo_ellipsoid reference to the ellipsoid
 /// 
 /// # Return Value
 /// 
@@ -81,6 +82,7 @@ pub fn lla2ecef(lla_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoid
 /// # Arguments
 /// 
 /// * `ecef_vec` - Vector3 reference to the ECEF vector (x, y, z)
+/// * `ellipsoid` - geo_ellipsoid reference to the ellipsoid
 /// 
 /// # Return Value
 /// 
@@ -109,6 +111,7 @@ pub fn ecef2lla(ecef_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoi
 /// # Arguments
 /// 
 /// * `ll_vec` - Vector2 reference to the LL vector (latitude, longitude) (radians, radians)
+/// * `ellipsoid` - geo_ellipsoid reference to the ellipsoid
 /// 
 /// # Return Value
 /// 
@@ -233,6 +236,97 @@ pub fn ll2utm(ll_vec: &Vector2<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoid) -
     }
 
     ret_utm
+}
+
+/// Converts UTM Grid coordinates to 2-d LL (using Karney method) - accruacy to within a few nanometers within 3900km of the central meridian
+/// 
+/// # Arguments
+/// 
+/// * `utm` - utm_grid reference to the UTM grid
+/// * `ellipsoid` - geo_ellipsoid reference to the ellipsoid
+/// 
+/// # Return Value
+/// 
+/// * `nalgebra::Vector2<f64>` - Lat, Lon (radians, radians)
+/// 
+/// # Notes
+/// 
+/// * Based on code from here: http://www.movable-type.co.uk/scripts/latlong-utm-mgrs.html 
+/// * Based on white paper from here: https://arxiv.org/abs/1002.1417
+/// * (c) Chris Veness 2014-2017 MIT Licence
+pub fn utm2ll(utm: &utm_grid::utm_grid, ellipsoid: &geo_ellipsoid::geo_ellipsoid) -> Vector2<f64> {
+    let mut ret_val: Vector2<f64> = Vector2::new(0.0, 0.0);
+    let z = utm.get_zone();
+    let h = utm.get_hem();
+    let mut x = utm.get_easting();
+    let mut y = utm.get_northing();
+
+    let a = ellipsoid.get_semi_major_axis();
+    let f = ellipsoid.get_flattening();
+    let e = ellipsoid.get_first_ecc();
+
+    //Make x relative to central meridian
+    x = x - utm_grid::FALSE_EASTING;
+
+    //Make y relative to equator
+    if h == utm_grid::hemisphere::SOUTH {
+        y = y - utm_grid::FALSE_NORTHING;
+    }
+
+    let n = f / (2.0 - f);
+    let n2 = n * n;
+    let n3 = n * n2;
+    let n4 = n * n3;
+    let n5 = n * n4;
+    let n6 = n * n5;
+
+    let A = a / (1.0 + n) * (1.0 + 1.0/4.0 * n2 + 1.0 / 64.0 * n4 + 1.0 / 256.0 * n6);
+    let eta = x / (utm_grid::SCALE_FACTOR_CENTERAL_MERIDIAN * A);
+    let xi = y / (utm_grid::SCALE_FACTOR_CENTERAL_MERIDIAN * A);
+
+    let beta = 
+        [0.0,
+            1.0 / 2.0 * n - 2.0 / 3.0 * n2 + 37.0 / 96.0 * n3 - 1.0 / 360.0 * n4 - 81.0 / 512.0 * n5 + 96199.0 / 604800.0 * n6,
+            1.0 / 48.0 * n2 + 1.0 / 15.0 * n3 - 437.0 / 440.0 * n4 + 46.0 / 105.0 * n5 - 1118711.0 / 3870720.0 * n6,
+            17.0 / 480.0 * n3 - 37.0 / 840.0 * n4 - 209.0 / 4480.0 * n5 + 5569.0 / 90720.0 * n6,
+            4397.0 / 161280.0 * n4 - 11.0 / 504.0 * n5 - 830251.0 / 7257600.0 * n6,
+            4583.0 / 161280.0 * n5 - 108847.0 / 3991680.0 * n6,
+            20648693.0 / 638668800.0 * n6];
+
+    let mut xip = xi;
+    for j in 1..7 {
+        xip -= beta[j] * (2.0 * (j as f64) * xi).sin() * (2.0 * (j as f64) * eta).cosh();
+    }
+
+    let mut etap = eta;
+    for j in 1..7 {
+        etap -= beta[j] * (2.0 * (j as f64) * xi).cos() * (2.0 * (j as f64) * eta).sinh();
+    }
+
+    let sinetap = etap.sinh();
+    let sinxip = xip.sin();
+    let cosxip = xip.cos();
+
+    let taup = sinxip / (sinetap * sinetap + cosxip * cosxip).sqrt();
+    let mut taui = taup;
+    while {
+        let sigmai = (e * (e * taui / (1.0 + taui * taui).sqrt()).atanh()).sinh();
+        let tauip = taui * (1.0 + sigmai * sigmai).sqrt() - sigmai * (1.0 + taui * taui).sqrt();
+        let delataui = (taup - tauip) / (1.0 + tauip * tauip).sqrt() * (1.0 + (1.0 - e * e) * taui * taui) / ((1.0 - e * e) * (1.0 + taui * taui).sqrt());
+        taui += delataui;
+        delataui.abs() > 1e-12
+    } {}
+
+    let phi = taui.atan();
+    let mut lambda = sinetap.atan2(cosxip);
+
+    let lambda0 = (((z - 1) * 6 - 180 + 3) as f64).to_radians();
+    lambda += lambda0;
+
+    ret_val.x = phi;
+    ret_val.y = lambda;
+
+    ret_val
 }
 
 /// Converts 3-d LLA origin coordinates plus 3-d LLA coordinates and an ellipsoid to 3-d local NED cartesian coordinates
@@ -400,6 +494,24 @@ mod tests {
         assert!(utm.get_northing().approx_eq_ratio(&test_northing, 0.00025));
         assert!(utm.get_convergence().approx_eq_ratio(&test_convergence, 0.00025));
         assert!(utm.get_scale().approx_eq_ratio(&test_scale, 0.00025));
+    }
+    #[test]
+    fn test_utm2ll() {
+        let ellipsoid = geo_ellipsoid::geo_ellipsoid::new(geo_ellipsoid::WGS84_SEMI_MAJOR_AXIS_METERS,
+                                            geo_ellipsoid::WGS84_FLATTENING);
+        let mut utm = utm_grid::utm_grid::new();
+        utm.set_zone(33);
+        utm.set_hem(utm_grid::hemisphere::NORTH);
+        utm.set_easting(431952.612166);
+        utm.set_northing(8782098.22289);
+        utm.set_convergence(-0.055232079);
+        utm.set_scale(0.999656581563);
+        let ll_vec = utm2ll(&utm, &ellipsoid);
+
+        let test_lat = 1.3804121468;
+        let test_lon = 0.20555336013;
+        assert!(ll_vec.x.approx_eq_ratio(&test_lat, 0.00025));
+        assert!(ll_vec.y.approx_eq_ratio(&test_lon, 0.00025));
     }
     #[test]
     fn test_lla2ned() {

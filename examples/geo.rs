@@ -47,6 +47,13 @@ fn main() {
     println!("Convergence: {}", utm.get_convergence());
     println!("Scale: {}", utm.get_scale());
 
+    //Convert UTM to LL
+    let llfromutm_vec = geo::utm2ll(&utm, &ellipsoid);
+    println!("-----LL from UTM-----");
+    println!("Lat: {}", llfromutm_vec.x.to_degrees());
+    println!("Lon: {}", llfromutm_vec.y.to_degrees());
+
+
     //Convert it to NED and back
     let lla_orig_vec = Vector3::new((lat_deg + 1.0).to_radians(), (lon_deg + 1.0).to_radians(), alt_m);
     let ned_vec = geo::lla2ned(&lla_orig_vec, &lla_again_vec, &ellipsoid);
