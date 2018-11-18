@@ -123,7 +123,7 @@ pub fn ecef2lla(ecef_vec: &Vector3<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoi
 /// * Based on white paper from here: https://arxiv.org/abs/1002.1417
 /// * (c) Chris Veness 2014-2017 MIT Licence
 pub fn ll2utm(ll_vec: &Vector2<f64>, ellipsoid: &geo_ellipsoid::geo_ellipsoid) -> utm_grid::utm_grid {
-    let mut ret_utm = utm_grid::utm_grid::new();
+    let mut ret_utm = utm_grid::utm_grid::new(0, utm_grid::hemisphere::NORTH, 0.0, 0.0, 0.0, 0.0);
     let mut zone = ((ll_vec.y.to_degrees() + 180.0) / 6.0).floor() + 1.0;
     let mut lon_cent_mer = ((zone - 1.0) * 6.0 - 180.0 + 3.0).to_radians();
 
@@ -499,7 +499,7 @@ mod tests {
     fn test_utm2ll() {
         let ellipsoid = geo_ellipsoid::geo_ellipsoid::new(geo_ellipsoid::WGS84_SEMI_MAJOR_AXIS_METERS,
                                             geo_ellipsoid::WGS84_FLATTENING);
-        let mut utm = utm_grid::utm_grid::new();
+        let mut utm = utm_grid::utm_grid::new(0, utm_grid::hemisphere::NORTH, 0.0, 0.0, 0.0, 0.0);
         utm.set_zone(33);
         utm.set_hem(utm_grid::hemisphere::NORTH);
         utm.set_easting(431952.612166);

@@ -20,14 +20,14 @@ pub struct utm_grid {
 }
 
 impl utm_grid {
-	pub fn new() -> utm_grid {
+	pub fn new(p_z: u32, p_h: hemisphere, p_e: f64, p_n: f64, p_c: f64, p_s: f64) -> utm_grid {
 		utm_grid {
-			zone: 0,
-			hem: hemisphere::NORTH,
-			easting: 0.0,
-			northing: 0.0,
-			convergence: 0.0,
-			scale: 0.0
+			zone: p_z,
+			hem: p_h,
+			easting: p_e,
+			northing: p_n,
+			convergence: p_c,
+			scale: p_s
 		}
 	}
 
