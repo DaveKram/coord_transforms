@@ -320,7 +320,7 @@ pub fn utm2ll(utm: &utm_grid::utm_grid, ellipsoid: &geo_ellipsoid::geo_ellipsoid
     let phi = taui.atan();
     let mut lambda = sinetap.atan2(cosxip);
 
-    let lambda0 = (((z - 1) * 6 - 180 + 3) as f64).to_radians();
+    let lambda0 = (((z as i32 - 1) * 6 - 180 + 3) as f64).to_radians();
     lambda += lambda0;
 
     ret_val.x = phi;
