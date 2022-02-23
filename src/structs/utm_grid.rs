@@ -61,7 +61,7 @@ impl utm_grid {
 	}
 
 	pub fn get_hem(&self) -> hemisphere {
-		self.hem.to_owned()
+		self.hem
 	}
 
 	pub fn get_easting(&self) -> f64 {
