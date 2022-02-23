@@ -105,7 +105,7 @@ fn main() {
 			}
 		}
 
-    	window.update_with_buffer(&buffer).unwrap();
+        window.update_with_buffer(&buffer, WIDTH, HEIGHT).unwrap();
 
     	//Wrap radians
     	if line_angle_rads >= 2.0 * 3.14 {
