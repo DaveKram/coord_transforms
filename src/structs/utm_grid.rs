@@ -2,13 +2,14 @@ pub const SCALE_FACTOR_CENTERAL_MERIDIAN: f64 = 0.9996;
 pub const FALSE_EASTING: f64 = 500000.0;
 pub const FALSE_NORTHING: f64 = 10000000.0;
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum hemisphere {
 	NORTH,
 	SOUTH
 }
 
+#[derive(Clone, Copy, Debug, PartialEq)]
 #[allow(non_camel_case_types)]
 pub struct utm_grid {
 	zone: u32,
@@ -60,7 +61,7 @@ impl utm_grid {
 	}
 
 	pub fn get_hem(&self) -> hemisphere {
-		self.hem.to_owned()
+		self.hem
 	}
 
 	pub fn get_easting(&self) -> f64 {
