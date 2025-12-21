@@ -1,3 +1,4 @@
+# **This library is not under development - and won't ever be. Use something else.**
 
 ## Synopsis
 
